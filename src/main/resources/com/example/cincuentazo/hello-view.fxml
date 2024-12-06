@@ -145,7 +145,7 @@
             </ImageView>
          </children>
       </HBox>
-      <Pane fx:id="paneinitial" layoutX="24.0" layoutY="48.0" opacity="0.95" prefHeight="390.0" prefWidth="569.0" style="-fx-background-color: DarkRed; -fx-background-radius: 10;" visible="false">
+      <Pane fx:id="paneinitial" layoutX="24.0" layoutY="48.0" opacity="0.95" prefHeight="390.0" prefWidth="569.0" style="-fx-background-color: DarkRed; -fx-background-radius: 10;">
          <children>
             <ImageView fitHeight="337.0" fitWidth="326.0" layoutX="9.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                <image>

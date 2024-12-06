@@ -11,6 +11,7 @@ public class MachineRunnable implements Runnable {
     private String[] hand;
     private String[] posiblecards;
     private int currentvalue;
+    private final Object lock = new Object();
 
     public MachineRunnable(String name) {
         this.name = name;
@@ -44,24 +45,32 @@ public class MachineRunnable implements Runnable {
         turn = false;
     }
     public Image setTurn(int valuemesa) {
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
+        synchronized (lock) {
+            try {
+                lock.wait(); // Wait until it's this machine's turn
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-        currentvalue = valuemesa;
-        for(int i = 0; i < hand.length; i++){
-            if(hand[i] != null){
-                int valor = getValor(hand[i]);
-                if(valor + currentvalue < 50){
-                    posiblecards[i] = hand[i];
+            currentvalue = valuemesa;
+            for (int i = 0; i < hand.length; i++) {
+                if (hand[i] != null) {
+                    int valor = getValor(hand[i]);
+                    if (valor + currentvalue < 50) {
+                        posiblecards[i] = hand[i];
+                    }
                 }
             }
+            return throwCard(getHighestPossibleCard());
         }
-        return throwCard(getHighestPossibleCard());
     }
+    public void notifyTurn() {
+        synchronized (lock) {
+            lock.notify();
+        }
+    }
+
 
     public String getHighestPossibleCard() {
         int highestValue = Integer.MIN_VALUE;
