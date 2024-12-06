@@ -250,12 +250,13 @@ public class GameController {
             space4 = false;
         }
 
-        /*if (machineThread1.isAlive()) {
+        if (machineThread1.isAlive()) {
+
             machineRunnable1.notifyTurn();
             cardsmachine = machineRunnable1.setTurn(Integer.parseInt(counter.getText()));
             mesa.setImage(cardsmachine);
 
-        }*/
+        }
 
     }
 
