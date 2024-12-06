@@ -56,6 +56,7 @@ public class MachineRunnable implements Runnable {
             }
 
             currentvalue = valuemesa;
+            posiblecards = new String[4];
             for (int i = 0; i < hand.length; i++) {
                 if (hand[i] != null) {
                     int valor = getValor(hand[i]);
@@ -92,7 +93,12 @@ public class MachineRunnable implements Runnable {
         return highestCard;
     }
     public Image throwCard(String card) {
-
+        for (int i = 0; i < hand.length; i++) {
+            if (hand[i] != null && hand[i].equals(card)) {
+                hand[i] = null;
+                break;
+            }
+        }
         String imageUrl = getClass().getResource("/com/example/cincuentazo/Images/cards/" + card + ".jpg").toExternalForm();
         Image ima = new Image(imageUrl);
         return ima;

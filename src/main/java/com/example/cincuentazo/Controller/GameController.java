@@ -282,6 +282,21 @@ public class GameController {
 
         }
 
+        if (machineThread2.isAlive()) {
+
+            machineRunnable2.notifyTurn();
+            cardsmachine = machineRunnable2.setTurn(Integer.parseInt(counter.getText()));
+            mesa.setImage(cardsmachine);
+
+        }
+
+        if(machineThread3.isAlive()){
+
+            machineRunnable3.notifyTurn();
+            cardsmachine = machineRunnable3.setTurn(Integer.parseInt(counter.getText()));
+            mesa.setImage(cardsmachine);
+        }
+
     }
 
 
