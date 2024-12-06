@@ -44,13 +44,15 @@ public class MachineRunnable implements Runnable {
     public void passTurn() {
         turn = false;
     }
-    public Image setTurn(int valuemesa) {
-
+    public Image setTurn(int valuemesa) throws InterruptedException {
+        Thread.sleep(4000);
         synchronized (lock) {
-            try {
-                lock.wait(); // Wait until it's this machine's turn
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            while (!turn) {
+                try {
+                    lock.wait(); // Wait until it's this machine's turn
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             currentvalue = valuemesa;
@@ -62,10 +64,13 @@ public class MachineRunnable implements Runnable {
                     }
                 }
             }
+            turn = false; // Reset turn after processing
             return throwCard(getHighestPossibleCard());
         }
+
     }
     public void notifyTurn() {
+        turn = true;
         synchronized (lock) {
             lock.notify();
         }
