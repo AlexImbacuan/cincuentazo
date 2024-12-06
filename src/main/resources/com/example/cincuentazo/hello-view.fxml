@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cincuentazo.Controller.GameController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cincuentazo.Controller.GameController">
    <children>
       <ImageView fitHeight="525.0" fitWidth="600.0" pickOnBounds="true">
          <image>
@@ -145,7 +145,7 @@
             </ImageView>
          </children>
       </HBox>
-      <Pane fx:id="paneinitial" layoutX="24.0" layoutY="48.0" opacity="0.95" prefHeight="390.0" prefWidth="569.0" style="-fx-background-color: DarkRed; -fx-background-radius: 10;">
+      <Pane fx:id="paneinitial" layoutX="16.0" layoutY="40.0" opacity="0.95" prefHeight="390.0" prefWidth="569.0" style="-fx-background-color: DarkRed; -fx-background-radius: 10;">
          <children>
             <ImageView fitHeight="337.0" fitWidth="326.0" layoutX="9.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -160,7 +160,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="machine1" layoutX="351.0" layoutY="167.0" mnemonicParsing="false" onAction="#ChooseMachine1" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Alex vs 1 maquina" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button fx:id="machine1" layoutX="351.0" layoutY="151.0" mnemonicParsing="false" onAction="#ChooseMachine1" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Alex vs 1 maquina" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -168,7 +168,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="machine2" layoutX="348.0" layoutY="219.0" mnemonicParsing="false" onAction="#ChooseMachine2" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Alex vs 2 maquinas" textFill="WHITE">
+            <Button fx:id="machine2" layoutX="348.0" layoutY="203.0" mnemonicParsing="false" onAction="#ChooseMachine2" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Alex vs 2 maquinas" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -176,7 +176,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnStart" layoutX="372.0" layoutY="288.0" mnemonicParsing="false" onAction="#enviar" pickOnBounds="false" style="-fx-background-color: green; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Iniciar juego" textFill="#fffdfd">
+            <Button fx:id="btnStart" layoutX="372.0" layoutY="307.0" mnemonicParsing="false" onAction="#enviar" pickOnBounds="false" style="-fx-background-color: green; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Iniciar juego" textFill="#fffdfd">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -189,6 +189,14 @@
                   <Font name="Book Antiqua Bold" size="21.0" />
                </font>
             </Label>
+            <Button fx:id="machine3" layoutX="351.0" layoutY="255.0" mnemonicParsing="false" onAction="#ChooseMachine3" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Alex vs 3 maquina" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </Pane>
    </children>

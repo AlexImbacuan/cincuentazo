@@ -27,6 +27,9 @@ public class GameController {
     private Button machine2;
 
     @FXML
+    private Button machine3;
+
+    @FXML
     private Pane paneinitial;
 
     @FXML
@@ -97,8 +100,10 @@ public class GameController {
     private String currentcard;
     private Thread machineThread1;
     private Thread machineThread2;
+    private Thread machineThread3;
     private MachineRunnable machineRunnable1;
     private MachineRunnable machineRunnable2;
+    private MachineRunnable machineRunnable3;
 
     public GameController() {
         System.out.println("Hello World!");
@@ -138,8 +143,10 @@ public class GameController {
         // Initialize and start machine threads
         machineRunnable1 = new MachineRunnable("Machine 1");
         machineRunnable2 = new MachineRunnable("Machine 2");
+        machineRunnable3 = new MachineRunnable("Machine 3");
         machineThread1 = new Thread(machineRunnable1);
         machineThread2 = new Thread(machineRunnable2);
+        machineThread3 = new Thread(machineRunnable3);
     }
 
     public void openhtlm(ActionEvent actionEvent) {
@@ -152,6 +159,7 @@ public class GameController {
         machineThread1.start();
         labelmachine2.setVisible(false);
         handmachine2.setVisible(false);
+        machine3.setVisible(false);
     }
 
     @FXML
@@ -159,6 +167,16 @@ public class GameController {
         machine1.setVisible(false);
         machineThread1.start();
         machineThread2.start();
+        machine3.setVisible(false);
+    }
+
+    @FXML
+    void ChooseMachine3(ActionEvent event) {
+        machineThread1.start();
+        machineThread2.start();
+        machineThread3.start();
+        machine1.setVisible(false);
+        machine2.setVisible(false);
     }
 
     @FXML
@@ -177,6 +195,12 @@ public class GameController {
             }
         }
 
+        if(machineThread3.isAlive()){
+            for(int i=0; i<4; i++){
+                machineRunnable3.takeCard(deck.getCard());
+            }
+        }
+
         if(machineThread1.isAlive()){
 
             card1maq1.setImage(machineRunnable1.showCards(0));
@@ -191,7 +215,7 @@ public class GameController {
 
         System.out.println("maquina 1 esta viva: "+ machineThread1.isAlive());
         System.out.println("maquina 2 esta viva: "+ machineThread2.isAlive());
-
+        System.out.println("maquina 3 esta viva: "+ machineThread3.isAlive());
 
     }
     @FXML
