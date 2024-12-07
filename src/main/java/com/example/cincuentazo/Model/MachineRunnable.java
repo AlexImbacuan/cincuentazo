@@ -12,8 +12,9 @@ public class MachineRunnable implements Runnable {
     private String[] posiblecards;
     private int currentvalue;
     private final Object lock = new Object();
+    private Deck deck;
 
-    public MachineRunnable(String name) {
+    public MachineRunnable(String name, Deck deck) {
         this.name = name;
         this.time = 1000;
         this.winner = false;
@@ -22,6 +23,7 @@ public class MachineRunnable implements Runnable {
         this.hand = new String[4];
         this.posiblecards = new String[4];
         this.currentvalue = 0;
+        this.deck = deck;
     }
     public void takeCard(String card) {
         for (int i = 0; i < hand.length; i++) {
@@ -99,6 +101,7 @@ public class MachineRunnable implements Runnable {
                 break;
             }
         }
+        takeCard(deck.getCard());
         String imageUrl = getClass().getResource("/com/example/cincuentazo/Images/cards/" + card + ".jpg").toExternalForm();
         Image ima = new Image(imageUrl);
         return ima;
