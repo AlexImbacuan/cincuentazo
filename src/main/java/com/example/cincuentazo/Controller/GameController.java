@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import com.example.cincuentazo.View.alert.AlertBox;
 
 public class GameController {
 
@@ -249,29 +250,43 @@ public class GameController {
 
     }
 
+    private boolean canPlayCard(String cardName) {
+        int cardValue = card.getValor(cardName);
+        return (cardValue + count) <= 50;
+    }
+
     public void colocarcarta(MouseEvent event) throws InterruptedException {
 
         ImageView clickedImageView = (ImageView) event.getSource();
         System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
+        String playedCard = null;
 
 
-        if (clickedImageView == carta1 && space1) {
+        if (clickedImageView == carta1 && space1 && canPlayCard(getCardName(carta1))) {
             mesa.setImage(carta1.getImage());
             carta1.setImage(null);
             space1 = false;
-
-        } else if (clickedImageView == carta2 && space2) {
+            playedCard = getCardName(carta1);
+        } else if (clickedImageView == carta2 && space2 && canPlayCard(getCardName(carta2))) {
             mesa.setImage(carta2.getImage());
             carta2.setImage(null);
             space2 = false;
-        } else if (clickedImageView == carta3 && space3) {
+            playedCard = getCardName(carta2);
+        } else if (clickedImageView == carta3 && space3 && canPlayCard(getCardName(carta3))) {
             mesa.setImage(carta3.getImage());
             carta3.setImage(null);
             space3 = false;
-        } else if (clickedImageView == carta4 && space4) {
+            playedCard = getCardName(carta3);
+        } else if (clickedImageView == carta4 && space4 && canPlayCard(getCardName(carta4))) {
             mesa.setImage(carta4.getImage());
             carta4.setImage(null);
             space4 = false;
+            playedCard = getCardName(carta4);
+        } else {
+            new AlertBox().showAlert("Error", "Invalid card", "You can't play this card");
+        }
+        if(playedCard != null) {
+            deck.addPlayedCard(playedCard);
         }
 
         if (machineThread1.isAlive()) {
@@ -297,6 +312,10 @@ public class GameController {
             mesa.setImage(cardsmachine);
         }
 
+    }
+
+    private String getCardName (ImageView imageView) {
+        return "cardName";
     }
 
 
