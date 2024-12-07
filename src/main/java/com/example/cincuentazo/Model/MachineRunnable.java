@@ -1,6 +1,7 @@
 package com.example.cincuentazo.Model;
 
 import javafx.scene.image.Image;
+import java.net.URL;
 
 public class MachineRunnable implements Runnable {
     private String name;
@@ -101,8 +102,13 @@ public class MachineRunnable implements Runnable {
                 break;
             }
         }
+        deck.addPlayedCard(card);
         takeCard(deck.getCard());
-        String imageUrl = getClass().getResource("/com/example/cincuentazo/Images/cards/" + card + ".jpg").toExternalForm();
+        URL resourceurl = getClass().getResource("/com/example/cincuentazo/Images/cards/" + card + ".jpg");
+        if (resourceurl == null) {
+            throw new RuntimeException("Resource not found: /com/example/cincuentazo/Images/cards/" + card + ".jpg");
+        }
+        String imageUrl = resourceurl.toExternalForm();
         Image ima = new Image(imageUrl);
         return ima;
 
