@@ -141,9 +141,9 @@ public class GameController {
         });
 
         // Initialize and start machine threads
-        machineRunnable1 = new MachineRunnable("Machine 1");
-        machineRunnable2 = new MachineRunnable("Machine 2");
-        machineRunnable3 = new MachineRunnable("Machine 3");
+        machineRunnable1 = new MachineRunnable("Machine 1", deck);
+        machineRunnable2 = new MachineRunnable("Machine 2", deck);
+        machineRunnable3 = new MachineRunnable("Machine 3", deck);
         machineThread1 = new Thread(machineRunnable1);
         machineThread2 = new Thread(machineRunnable2);
         machineThread3 = new Thread(machineRunnable3);
