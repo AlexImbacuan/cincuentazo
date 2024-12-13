@@ -479,21 +479,25 @@ public class GameController {
 
         if (!playerEliminated && activeMachines == 0) {
             new AlertBox().showAlert("Winner", "You are the winner!", "Congratulations!");
+            Platform.exit();
             return;
         }
 
         if (playerEliminated && machineThread1.isAlive() && !machineRunnable1.isLoser() && !machineThread2.isAlive() && !machineThread3.isAlive()) {
             new AlertBox().showAlert("Winner", "Machine 1 is the winner!", "Congratulations!");
+            Platform.exit();
             return;
         }
 
         if (playerEliminated && !machineThread1.isAlive() && machineThread2.isAlive() && !machineRunnable2.isLoser() && !machineThread3.isAlive()) {
             new AlertBox().showAlert("Winner", "Machine 2 is the winner!", "Congratulations!");
+            Platform.exit();
             return;
         }
 
         if (playerEliminated && !machineThread1.isAlive() && !machineThread2.isAlive() && machineThread3.isAlive() && !machineRunnable3.isLoser()) {
             new AlertBox().showAlert("Winner", "Machine 3 is the winner!", "Congratulations!");
+            Platform.exit();
             return;
         }
     }
