@@ -16,6 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import com.example.cincuentazo.View.alert.AlertBox;
 import javafx.application.Platform;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -219,8 +224,12 @@ public class GameController {
     }
 
     public void openhtlm(ActionEvent actionEvent) {
-        System.out.println("maquina 1 esta viva: "+ machineThread1.isAlive());
-        System.out.println("maquina 2 esta viva: "+ machineThread2.isAlive());
+        try {
+            File file = new File(getClass().getResource("/com/example/cincuentazo/Instructions.html").toURI());
+            Desktop.getDesktop().browse(file.toURI());
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
     @FXML
     void ChooseMachine1(ActionEvent event) {

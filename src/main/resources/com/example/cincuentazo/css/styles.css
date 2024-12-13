@@ -1,0 +1,22 @@
+/* Aplica el estilo al fondo */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Asegura que el body ocupe toda la altura de la ventana */
+    background-image: url('../images/bg_main.jpg'); /* Ruta a la imagen */
+    background-size: cover; /* Ajusta la imagen para que cubra el área */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Fija la imagen de fondo */
+    color: white; /* Color de texto para contraste */
+    text-shadow: 1px 1px 2px black; /* Sombra para mejorar visibilidad */
+}
+
+.background {
+    width: 100%; /* Ancho del contenedor: 100% de la ventana del navegador */
+    min-height: 100vh; /* Altura del contenedor: 100% de la ventana del navegador */
+    display: flex; /* Permite centrar contenido */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
