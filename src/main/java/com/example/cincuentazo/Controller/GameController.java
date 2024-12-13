@@ -16,10 +16,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import com.example.cincuentazo.View.alert.AlertBox;
 import javafx.application.Platform;
-
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import static java.lang.Thread.sleep;
 
 public class GameController {
+    private final Lock turnLock = new ReentrantLock();
+    private final Condition machine1Turn = turnLock.newCondition();
+    private final Condition machine2Turn = turnLock.newCondition();
+    private final Condition machine3Turn = turnLock.newCondition();
+    private int currentTurn = 1; // 1 for machine1, 2 for machine2, 3 for machine3
 
     @FXML
     private Button machine1;
@@ -332,31 +342,74 @@ public class GameController {
 
         checkForElimination();
 
-        if (machineThread1.isAlive() && !machineRunnable1.isLoser()) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-            machineRunnable1.notifyTurn();
-            cardsmachine = machineRunnable1.setTurn(Integer.parseInt(counter.getText()));
-            Platform.runLater(() -> mesa.setImage(cardsmachine));
+        scheduler.schedule(() -> {
+            turnLock.lock();
+            try {
+                while (currentTurn != 1) {
+                    machine1Turn.await();
+                }
+                if (machineThread1.isAlive() && !machineRunnable1.isLoser()) {
+                    System.out.println("Machine 1 is playing");
+                    machineRunnable1.notifyTurn();
+                    cardsmachine = machineRunnable1.setTurn(Integer.parseInt(counter.getText()));
+                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                }
+                currentTurn = 2;
+                machine2Turn.signal();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                turnLock.unlock();
+            }
+        }, 0, TimeUnit.SECONDS);
 
-        }
+        scheduler.schedule(() -> {
+            turnLock.lock();
+            try {
+                while (currentTurn != 2) {
+                    machine2Turn.await();
+                }
+                if (machineThread2.isAlive() && !machineRunnable2.isLoser()) {
+                    System.out.println("Machine 2 is playing");
+                    machineRunnable2.notifyTurn();
+                    cardsmachine = machineRunnable2.setTurn(Integer.parseInt(counter.getText()));
+                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                }
+                currentTurn = 3;
+                machine3Turn.signal();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                turnLock.unlock();
+            }
+        }, 1, TimeUnit.SECONDS);
 
-        if (machineThread2.isAlive() && !machineRunnable2.isLoser()) {
+        scheduler.schedule(() -> {
+            turnLock.lock();
+            try {
+                while (currentTurn != 3) {
+                    machine3Turn.await();
+                }
+                if (machineThread3.isAlive() && !machineRunnable3.isLoser()) {
+                    System.out.println("Machine 3 is playing");
+                    machineRunnable3.notifyTurn();
+                    cardsmachine = machineRunnable3.setTurn(Integer.parseInt(counter.getText()));
+                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                }
+                currentTurn = 1;
+                machine1Turn.signal();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                turnLock.unlock();
+            }
+        }, 2, TimeUnit.SECONDS);
 
-            machineRunnable2.notifyTurn();
-            cardsmachine = machineRunnable2.setTurn(Integer.parseInt(counter.getText()));
-            mesa.setImage(cardsmachine);
-
-        }
-
-        if(machineThread3.isAlive() && !machineRunnable3.isLoser()) {
-
-            machineRunnable3.notifyTurn();
-            cardsmachine = machineRunnable3.setTurn(Integer.parseInt(counter.getText()));
-            mesa.setImage(cardsmachine);
-        }
+        scheduler.shutdown();
 
         checkForWinner();
-
     }
 
     private String getCardName (ImageView imageView) {

@@ -90,8 +90,8 @@ public class MachineRunnable implements Runnable {
 
     }
     public void notifyTurn() {
-        turn = true;
         synchronized (lock) {
+            turn = true;
             lock.notify();
         }
     }
