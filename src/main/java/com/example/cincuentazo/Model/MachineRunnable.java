@@ -1,6 +1,8 @@
 package com.example.cincuentazo.Model;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.net.URL;
 
 public class MachineRunnable implements Runnable {
@@ -14,6 +16,7 @@ public class MachineRunnable implements Runnable {
     private int currentvalue;
     private final Object lock = new Object();
     private Deck deck;
+    private ImageView mesaImageView;
 
     public MachineRunnable(String name, Deck deck) {
         this.name = name;
@@ -25,6 +28,7 @@ public class MachineRunnable implements Runnable {
         this.posiblecards = new String[4];
         this.currentvalue = 0;
         this.deck = deck;
+        this.mesaImageView = mesaImageView;
     }
     public void takeCard(String card) {
         for (int i = 0; i < hand.length; i++) {
@@ -44,9 +48,13 @@ public class MachineRunnable implements Runnable {
 
         return null;
     }
+
+
     public void passTurn() {
         turn = false;
     }
+
+
     public Image setTurn(int valuemesa) throws InterruptedException {
         Thread.sleep(4000);
         synchronized (lock) {
@@ -60,13 +68,20 @@ public class MachineRunnable implements Runnable {
 
             currentvalue = valuemesa;
             posiblecards = new String[4];
+            boolean canPlay = false;
             for (int i = 0; i < hand.length; i++) {
                 if (hand[i] != null) {
                     int valor = getValor(hand[i]);
                     if (valor + currentvalue < 50) {
                         posiblecards[i] = hand[i];
+                        canPlay = true;
                     }
                 }
+            }
+
+            if(!canPlay){
+                loser = true;
+                return null;
             }
             turn = false; // Reset turn after processing
             return throwCard(getHighestPossibleCard());
@@ -163,7 +178,12 @@ public class MachineRunnable implements Runnable {
         }
     }
 
-    public boolean getHand() {
+    public boolean getHand()
+    {
         return hand != null;
+    }
+
+    public boolean isLoser() {
+        return loser;
     }
 }

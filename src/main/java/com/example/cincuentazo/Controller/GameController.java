@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import com.example.cincuentazo.View.alert.AlertBox;
+import javafx.application.Platform;
 
 public class GameController {
 
@@ -105,6 +106,7 @@ public class GameController {
     private MachineRunnable machineRunnable1;
     private MachineRunnable machineRunnable2;
     private MachineRunnable machineRunnable3;
+    private boolean playerEliminated;
 
     public GameController() {
         System.out.println("Hello World!");
@@ -114,7 +116,7 @@ public class GameController {
         this.space4 = false;
         this.namecard = "";
         this.currentcard = "";
-
+        this.playerEliminated = false;
 
 
     }
@@ -210,6 +212,17 @@ public class GameController {
             card4maq1.setImage(machineRunnable1.showCards(3));
         }
 
+        // Poner una carta aleatoria del mazo en la mesa para iniciar
+        String initialCard = deck.getCard();
+        String imageUrl = getClass().getResource("/com/example/cincuentazo/Images/cards/" + initialCard + ".jpg").toExternalForm();
+        Image initialImage = new Image(imageUrl);
+        mesa.setImage(initialImage);
+        deck.addPlayedCard(initialCard);
+        counter.setText(String.valueOf(count));
+
+        // Agregar la carta inicial a las cartas jugadas
+
+
 
         System.out.println("maquina 1 puede jugar: "+machineRunnable1.getHand());
         System.out.println("maquina 2 puede jugar: "+machineRunnable1.getHand());
@@ -256,48 +269,58 @@ public class GameController {
     }
 
     public void colocarcarta(MouseEvent event) throws InterruptedException {
-
-        ImageView clickedImageView = (ImageView) event.getSource();
-        System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
-        String playedCard = null;
-
-
-        if (clickedImageView == carta1 && space1 && canPlayCard(getCardName(carta1))) {
-            mesa.setImage(carta1.getImage());
-            carta1.setImage(null);
-            space1 = false;
-            playedCard = getCardName(carta1);
-        } else if (clickedImageView == carta2 && space2 && canPlayCard(getCardName(carta2))) {
-            mesa.setImage(carta2.getImage());
-            carta2.setImage(null);
-            space2 = false;
-            playedCard = getCardName(carta2);
-        } else if (clickedImageView == carta3 && space3 && canPlayCard(getCardName(carta3))) {
-            mesa.setImage(carta3.getImage());
-            carta3.setImage(null);
-            space3 = false;
-            playedCard = getCardName(carta3);
-        } else if (clickedImageView == carta4 && space4 && canPlayCard(getCardName(carta4))) {
-            mesa.setImage(carta4.getImage());
-            carta4.setImage(null);
-            space4 = false;
-            playedCard = getCardName(carta4);
+        if (playerEliminated) {
+            new AlertBox().showAlert("Eliminated", "You have been eliminated", "You cannot play anymore.");
         } else {
-            new AlertBox().showAlert("Error", "Invalid card", "You can't play this card");
-        }
-        if(playedCard != null) {
-            deck.addPlayedCard(playedCard);
+            ImageView clickedImageView = (ImageView) event.getSource();
+            System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
+            String playedCard = null;
+
+            if (clickedImageView == carta1 && space1 && canPlayCard(getCardName(carta1))) {
+                Platform.runLater(() -> {
+                    mesa.setImage(carta1.getImage());
+                    carta1.setImage(null);
+                });
+                space1 = false;
+                playedCard = getCardName(carta1);
+            } else if (clickedImageView == carta2 && space2 && canPlayCard(getCardName(carta2))) {
+                mesa.setImage(carta2.getImage());
+                carta2.setImage(null);
+                space2 = false;
+                playedCard = getCardName(carta2);
+            } else if (clickedImageView == carta3 && space3 && canPlayCard(getCardName(carta3))) {
+                mesa.setImage(carta3.getImage());
+                carta3.setImage(null);
+                space3 = false;
+                playedCard = getCardName(carta3);
+            } else if (clickedImageView == carta4 && space4 && canPlayCard(getCardName(carta4))) {
+                mesa.setImage(carta4.getImage());
+                carta4.setImage(null);
+                space4 = false;
+                playedCard = getCardName(carta4);
+            } else {
+                new AlertBox().showAlert("Error", "Invalid card", "You can't play this card");
+            }
+            if(playedCard != null) {
+                deck.addPlayedCard(playedCard);
+                count += card.getValor(playedCard);
+                counter.setText(String.valueOf(count));
+                System.out.println("Played card: " + playedCard + " Count: " + count);
+                Platform.runLater(() -> counter.setText(String.valueOf(count)));
+            }
         }
 
-        if (machineThread1.isAlive()) {
+        checkForElimination();
+
+        if (machineThread1.isAlive() && !machineRunnable1.isLoser()) {
 
             machineRunnable1.notifyTurn();
             cardsmachine = machineRunnable1.setTurn(Integer.parseInt(counter.getText()));
-            mesa.setImage(cardsmachine);
+            Platform.runLater(() -> mesa.setImage(cardsmachine));
 
         }
 
-        if (machineThread2.isAlive()) {
+        if (machineThread2.isAlive() && !machineRunnable2.isLoser()) {
 
             machineRunnable2.notifyTurn();
             cardsmachine = machineRunnable2.setTurn(Integer.parseInt(counter.getText()));
@@ -305,12 +328,14 @@ public class GameController {
 
         }
 
-        if(machineThread3.isAlive()){
+        if(machineThread3.isAlive() && !machineRunnable3.isLoser()) {
 
             machineRunnable3.notifyTurn();
             cardsmachine = machineRunnable3.setTurn(Integer.parseInt(counter.getText()));
             mesa.setImage(cardsmachine);
         }
+
+        checkForWinner();
 
     }
 
@@ -318,5 +343,59 @@ public class GameController {
         return "cardName";
     }
 
+    private boolean shouldPlayerBeEliminated() {
+        int totalValue = 0;
+        if (space1) totalValue += card.getValor(getCardName(carta1));
+        if (space2) totalValue += card.getValor(getCardName(carta2));
+        if (space3) totalValue += card.getValor(getCardName(carta3));
+        if (space4) totalValue += card.getValor(getCardName(carta4));
+        return (totalValue + count) > 50;
+    }
+
+    private void checkForElimination() {
+        if (machineRunnable1.isLoser()) {
+            System.out.println("Machine 1 is eliminated");
+        }
+        if (machineRunnable2.isLoser()) {
+            System.out.println("Machine 2 is eliminated");
+        }
+        if (machineRunnable3.isLoser()) {
+            System.out.println("Machine 3 is eliminated");
+        }
+        if (shouldPlayerBeEliminated()) {
+            playerEliminated = true;
+            System.out.println("Player is eliminated");
+            // Additional logic to handle player elimination
+        }
+    }
+
+    private void checkForWinner() {
+        int activeMachines = 0;
+        if (machineThread1.isAlive() && !machineRunnable1.isLoser()) activeMachines++;
+        if (machineThread2.isAlive() && !machineRunnable2.isLoser()) activeMachines++;
+        if (machineThread3.isAlive() && !machineRunnable3.isLoser()) activeMachines++;
+
+        if (!playerEliminated && activeMachines == 0) {
+            new AlertBox().showAlert("Winner", "You are the winner!", "Congratulations!");
+            return;
+        }
+
+        if (playerEliminated && machineThread1.isAlive() && !machineRunnable1.isLoser() && !machineThread2.isAlive() && !machineThread3.isAlive()) {
+            new AlertBox().showAlert("Winner", "Machine 1 is the winner!", "Congratulations!");
+            return;
+        }
+
+        if (playerEliminated && !machineThread1.isAlive() && machineThread2.isAlive() && !machineRunnable2.isLoser() && !machineThread3.isAlive()) {
+            new AlertBox().showAlert("Winner", "Machine 2 is the winner!", "Congratulations!");
+            return;
+        }
+
+        if (playerEliminated && !machineThread1.isAlive() && !machineThread2.isAlive() && machineThread3.isAlive() && !machineRunnable3.isLoser()) {
+            new AlertBox().showAlert("Winner", "Machine 3 is the winner!", "Congratulations!");
+            return;
+        }
+    }
 
 }
+
+
