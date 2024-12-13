@@ -90,16 +90,34 @@ public class GameController {
     private ImageView card4maq2;
 
     @FXML
+    private ImageView card1maq3;
+
+    @FXML
+    private ImageView card2maq3;
+
+    @FXML
+    private ImageView card3maq3;
+
+    @FXML
+    private ImageView card4maq3;
+
+    @FXML
     private HBox handmachine1; // HBox to hold the cards of machine 1
 
     @FXML
     private HBox handmachine2;
 
     @FXML
+    private HBox handmachine3;
+
+    @FXML
     private Label labelmachine1;
 
     @FXML
     private Label labelmachine2;
+
+    @FXML
+    private Label labelmachine3;
 
     private Image cardsmachine;
     private int count = 0;
@@ -177,6 +195,13 @@ public class GameController {
                         card3maq2.setImage(machineRunnable2.showCards(2));
                         card4maq2.setImage(machineRunnable2.showCards(3));
                     }//visualizar cartas de la maquina 2
+                    if(machineThread3.isAlive()){
+
+                        card1maq3.setImage(machineRunnable3.showCards(0));
+                        card2maq3.setImage(machineRunnable3.showCards(1));
+                        card3maq3.setImage(machineRunnable3.showCards(2));
+                        card4maq3.setImage(machineRunnable3.showCards(3));
+                    }//visualizar cartas de la maquina 3
 
                 } else {
                     System.out.println("Image on mesa is null or has no URL" + imageName);
@@ -203,6 +228,8 @@ public class GameController {
         machineThread1.start();
         labelmachine2.setVisible(false);
         handmachine2.setVisible(false);
+        labelmachine3.setVisible(false);
+        handmachine3.setVisible(false);
         machine3.setVisible(false);
     }
 
@@ -212,6 +239,8 @@ public class GameController {
         machineThread1.start();
         machineThread2.start();
         machine3.setVisible(false);
+        labelmachine3.setVisible(false);
+        handmachine3.setVisible(false);
     }
 
     @FXML
