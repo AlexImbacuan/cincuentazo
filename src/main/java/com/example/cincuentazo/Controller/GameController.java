@@ -468,10 +468,10 @@ public class GameController {
 
     private boolean shouldPlayerBeEliminated() {
         int totalValue = 0;
-        if (space1) totalValue += card.getValor(getCardName(carta1));
-        if (space2) totalValue += card.getValor(getCardName(carta2));
-        if (space3) totalValue += card.getValor(getCardName(carta3));
-        if (space4) totalValue += card.getValor(getCardName(carta4));
+        if (space1 && carta1.getImage() != null) totalValue += card.getValor(getCardNameFromImageView(carta1));
+        if (space2 && carta2.getImage() != null) totalValue += card.getValor(getCardNameFromImageView(carta2));
+        if (space3 && carta3.getImage() != null) totalValue += card.getValor(getCardNameFromImageView(carta3));
+        if (space4 && carta4.getImage() != null) totalValue += card.getValor(getCardNameFromImageView(carta4));
         return (totalValue + count) > 50;
     }
 
