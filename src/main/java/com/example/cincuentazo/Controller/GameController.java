@@ -176,7 +176,7 @@ public class GameController {
                             throw new RuntimeException(e);
                         }
 
-                        count += card.getValor(playedCard);
+
                         counter.setText(String.valueOf(count));
                         System.out.println("Played card: " + playedCard + " Count: " + count);
                         Platform.runLater(() -> counter.setText(String.valueOf(count)));
@@ -332,39 +332,51 @@ public class GameController {
         return (cardValue + count) <= 50;
     }
 
+    private String getCardNameFromImageView(ImageView imageView) {
+        if (imageView.getImage() != null && imageView.getImage().getUrl() != null) {
+            String imageUrl = imageView.getImage().getUrl();
+            return imageUrl.substring(imageUrl.lastIndexOf('/') + 1, imageUrl.lastIndexOf('.'));
+        }
+        return null;
+    }
+
     public void colocarcarta(MouseEvent event) throws InterruptedException {
         if (playerEliminated) {
             new AlertBox().showAlert("Eliminated", "You have been eliminated", "You cannot play anymore.");
         } else {
             ImageView clickedImageView = (ImageView) event.getSource();
+            String cardName = getCardNameFromImageView(clickedImageView);
             System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
 
 
-            if (clickedImageView == carta1 && space1 && canPlayCard(getCardName(carta1))) {
+            if (clickedImageView == carta1 && space1 && canPlayCard(cardName)) {
                 //Platform.runLater(() -> {
                     mesa.setImage(carta1.getImage());
                     carta1.setImage(null);
                 //});
                 space1 = false;
-                playedCard = getCardName(carta1);
-            } else if (clickedImageView == carta2 && space2 && canPlayCard(getCardName(carta2))) {
+                playedCard = cardName;
+
+            } else if (clickedImageView == carta2 && space2 && canPlayCard(cardName)) {
                 mesa.setImage(carta2.getImage());
                 carta2.setImage(null);
                 space2 = false;
-                playedCard = getCardName(carta2);
-            } else if (clickedImageView == carta3 && space3 && canPlayCard(getCardName(carta3))) {
+                playedCard = cardName;
+            } else if (clickedImageView == carta3 && space3 && canPlayCard(cardName)) {
                 mesa.setImage(carta3.getImage());
                 carta3.setImage(null);
                 space3 = false;
-                playedCard = getCardName(carta3);
-            } else if (clickedImageView == carta4 && space4 && canPlayCard(getCardName(carta4))) {
+                playedCard = cardName;
+            } else if (clickedImageView == carta4 && space4 && canPlayCard(cardName)) {
                 mesa.setImage(carta4.getImage());
                 carta4.setImage(null);
                 space4 = false;
-                playedCard = getCardName(carta4);
+                playedCard = cardName;
             } else {
                 new AlertBox().showAlert("Error", "Invalid card", "You can't play this card");
             }
+            System.out.println("Played card: " + playedCard);
+            deck.addPlayedCard(playedCard);
 
 
         }
