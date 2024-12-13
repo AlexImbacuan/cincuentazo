@@ -384,7 +384,7 @@ public class GameController {
             } finally {
                 turnLock.unlock();
             }
-        }, 1, TimeUnit.SECONDS);
+        }, 2, TimeUnit.SECONDS);
 
         scheduler.schedule(() -> {
             turnLock.lock();
@@ -405,7 +405,7 @@ public class GameController {
             } finally {
                 turnLock.unlock();
             }
-        }, 2, TimeUnit.SECONDS);
+        }, 4, TimeUnit.SECONDS);
 
         scheduler.shutdown();
 
