@@ -17,6 +17,8 @@ import javafx.scene.layout.Pane;
 import com.example.cincuentazo.View.alert.AlertBox;
 import javafx.application.Platform;
 
+import static java.lang.Thread.sleep;
+
 public class GameController {
 
     @FXML
@@ -107,6 +109,7 @@ public class GameController {
     private MachineRunnable machineRunnable2;
     private MachineRunnable machineRunnable3;
     private boolean playerEliminated;
+    private String playedCard;
 
     public GameController() {
         System.out.println("Hello World!");
@@ -117,6 +120,7 @@ public class GameController {
         this.namecard = "";
         this.currentcard = "";
         this.playerEliminated = false;
+        this.playedCard = null;
 
 
     }
@@ -136,6 +140,33 @@ public class GameController {
                     // Update count and counter
                     count += card.getValor(imageName);
                     counter.setText(String.valueOf(count));
+
+                    if(playedCard != null) {
+                        try {
+                            sleep(2000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        deck.addPlayedCard(playedCard);
+                        count += card.getValor(playedCard);
+                        counter.setText(String.valueOf(count));
+                        System.out.println("Played card: " + playedCard + " Count: " + count);
+                        Platform.runLater(() -> counter.setText(String.valueOf(count)));
+                    }
+                    if(machineThread1.isAlive()){
+
+                        card1maq1.setImage(machineRunnable1.showCards(0));
+                        card2maq1.setImage(machineRunnable1.showCards(1));
+                        card3maq1.setImage(machineRunnable1.showCards(2));
+                        card4maq1.setImage(machineRunnable1.showCards(3));
+                    }//visualizar cartas de la maquina 1
+                    if(machineThread2.isAlive()){
+
+                        card1maq2.setImage(machineRunnable2.showCards(0));
+                        card2maq2.setImage(machineRunnable2.showCards(1));
+                        card3maq2.setImage(machineRunnable2.showCards(2));
+                        card4maq2.setImage(machineRunnable2.showCards(3));
+                    }//visualizar cartas de la maquina 2
 
                 } else {
                     System.out.println("Image on mesa is null or has no URL" + imageName);
@@ -204,13 +235,7 @@ public class GameController {
             }
         }
 
-        if(machineThread1.isAlive()){
 
-            card1maq1.setImage(machineRunnable1.showCards(0));
-            card2maq1.setImage(machineRunnable1.showCards(1));
-            card3maq1.setImage(machineRunnable1.showCards(2));
-            card4maq1.setImage(machineRunnable1.showCards(3));
-        }
 
         // Poner una carta aleatoria del mazo en la mesa para iniciar
         String initialCard = deck.getCard();
@@ -274,7 +299,7 @@ public class GameController {
         } else {
             ImageView clickedImageView = (ImageView) event.getSource();
             System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
-            String playedCard = null;
+
 
             if (clickedImageView == carta1 && space1 && canPlayCard(getCardName(carta1))) {
                 Platform.runLater(() -> {
@@ -301,13 +326,8 @@ public class GameController {
             } else {
                 new AlertBox().showAlert("Error", "Invalid card", "You can't play this card");
             }
-            if(playedCard != null) {
-                deck.addPlayedCard(playedCard);
-                count += card.getValor(playedCard);
-                counter.setText(String.valueOf(count));
-                System.out.println("Played card: " + playedCard + " Count: " + count);
-                Platform.runLater(() -> counter.setText(String.valueOf(count)));
-            }
+
+
         }
 
         checkForElimination();
