@@ -341,10 +341,10 @@ public class GameController {
 
 
             if (clickedImageView == carta1 && space1 && canPlayCard(getCardName(carta1))) {
-                Platform.runLater(() -> {
+                //Platform.runLater(() -> {
                     mesa.setImage(carta1.getImage());
                     carta1.setImage(null);
-                });
+                //});
                 space1 = false;
                 playedCard = getCardName(carta1);
             } else if (clickedImageView == carta2 && space2 && canPlayCard(getCardName(carta2))) {
