@@ -54,6 +54,7 @@ public class Deck {//generar un maso, enviar una carta,recolver el mazo
     {
         lastPlayedCard = card;
         playedCards.add(card);
+        System.out.println("Played cards: " + playedCards);
     }
 
     private void reshuffleDeck()
