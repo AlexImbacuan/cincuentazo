@@ -56,7 +56,7 @@ public class MachineRunnable implements Runnable {
 
 
     public Image setTurn(int valuemesa) throws InterruptedException {
-        Thread.sleep(4000);
+
         synchronized (lock) {
             while (!turn) {
                 try {
@@ -83,7 +83,8 @@ public class MachineRunnable implements Runnable {
                 loser = true;
                 return null;
             }
-            turn = false; // Reset turn after processing
+            turn = false;
+            Thread.sleep(0000);// Reset turn after processing
             return throwCard(getHighestPossibleCard());
         }
 
