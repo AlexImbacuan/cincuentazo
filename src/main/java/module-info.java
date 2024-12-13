@@ -3,6 +3,7 @@ module com.example.cincuentazo {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
+    requires java.desktop;
 
     opens com.example.cincuentazo to javafx.fxml;
     exports com.example.cincuentazo;
