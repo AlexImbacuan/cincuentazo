@@ -175,7 +175,7 @@ public class GameController {
                         } catch (InterruptedException e) {
                             throw new RuntimeException(e);
                         }
-                        deck.addPlayedCard(playedCard);
+
                         count += card.getValor(playedCard);
                         counter.setText(String.valueOf(count));
                         System.out.println("Played card: " + playedCard + " Count: " + count);
