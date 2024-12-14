@@ -1,13 +1,20 @@
 package com.example.cincuentazo.Model;
 
-public class Player {//4 cartas, un turno, estado(ganador o perdedor), tomar una carta, lanzar una carta, robar una carta, pasar el turno
+/**
+ * Represents a player in the game.
+ */
+public class Player {
 
     private int topcard;
     private boolean winner;
     private boolean turn;
     private Card[] hand;
 
-
+    /**
+     * Constructs a new Player with the specified name.
+     *
+     * @param name the name of the player
+     */
     public Player(String name) {
 
         this.topcard = 0;
@@ -17,6 +24,11 @@ public class Player {//4 cartas, un turno, estado(ganador o perdedor), tomar una
 
     }
 
+    /**
+     * Adds a card to the player's hand.
+     *
+     * @param card the card to add
+     */
     public void takeCard(Card card) {
         for (int i = 0; i < hand.length; i++) {
             if (hand[i] == null) {

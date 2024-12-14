@@ -11,14 +11,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="523.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cincuentazo.Controller.GameController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="596.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cincuentazo.Controller.GameController">
    <children>
-      <ImageView fitHeight="525.0" fitWidth="600.0" pickOnBounds="true">
+      <ImageView fitHeight="599.0" fitWidth="676.0" pickOnBounds="true">
          <image>
             <Image url="@Images/fondo.jpg" />
          </image>
       </ImageView>
-      <ImageView fx:id="mazo" fitHeight="150.0" fitWidth="96.0" layoutX="463.0" layoutY="353.0" onMouseClicked="#enviarfoto" opacity="0.82" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="mazo" fitHeight="150.0" fitWidth="96.0" layoutX="538.0" layoutY="430.0" onMouseClicked="#enviarfoto" opacity="0.82" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Images/mazo.png" />
          </image>
@@ -26,9 +26,9 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <VBox alignment="CENTER" layoutX="249.0" layoutY="75.0" prefHeight="238.0" prefWidth="117.0">
+      <VBox alignment="CENTER" layoutX="278.0" layoutY="176.0" prefHeight="242.0" prefWidth="120.0">
          <children>
-            <Label fx:id="counter" alignment="CENTER" opacity="0.97" prefHeight="52.0" prefWidth="87.0" style="-fx-background-color: gray; -fx-border-style: 60;" text="0" textAlignment="CENTER" textFill="#eefac1">
+            <Label fx:id="counter" alignment="CENTER" opacity="0.97" prefHeight="51.0" prefWidth="87.0" style="-fx-background-color: gray; -fx-border-style: 60;" text="0" textAlignment="CENTER" textFill="#eefac1">
                <font>
                   <Font size="42.0" />
                </font>
@@ -46,7 +46,7 @@
             </ImageView>
          </children>
       </VBox>
-      <HBox layoutX="36.0" layoutY="346.0">
+      <HBox layoutX="99.0" layoutY="430.0">
          <children>
             <ImageView fx:id="carta1" fitHeight="150.0" fitWidth="96.0" onMouseClicked="#colocarcarta" opacity="0.76" pickOnBounds="true">
                <image>
@@ -82,22 +82,27 @@
             </ImageView>
          </children>
       </HBox>
-      <Label fx:id="labelmachine1" layoutX="36.0" layoutY="20.0" text="Máquina 1" textFill="#fcf8f8">
+      <Label fx:id="labelmachine1" layoutX="36.0" layoutY="90.0" text="Máquina 1" textFill="#fcf8f8">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
-      <Label fx:id="labelmachine2" layoutX="439.0" layoutY="20.0" text="Máquina 2" textFill="#fcf8f8">
+      <Label fx:id="labelmachine2" layoutX="274.0" layoutY="14.0" text="Máquina 2" textFill="#fcf8f8">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="241.0" layoutY="28.0" prefHeight="53.0" prefWidth="127.0" style="-fx-background-color: Olive; -fx-border-color: green; -fx-border-radius: 10; -fx-background-radius: 10;" text="score" textFill="WHITE">
+      <Label alignment="CENTER" layoutX="274.0" layoutY="137.0" prefHeight="46.0" prefWidth="127.0" style="-fx-background-color: Olive; -fx-border-color: green; -fx-border-radius: 10; -fx-background-radius: 10;" text="score" textFill="WHITE">
          <font>
             <Font name="Cambria Math" size="36.0" />
          </font>
       </Label>
-      <HBox fx:id="handmachine1" layoutX="14.0" layoutY="59.0" prefHeight="78.0" prefWidth="169.0">
+      <Label fx:id="labelmachine3" layoutX="508.0" layoutY="83.0" text="Máquina 3" textFill="#fcf8f8">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <HBox fx:id="handmachine1" layoutX="11.0" layoutY="129.0" prefHeight="78.0" prefWidth="169.0">
          <children>
             <ImageView fx:id="card1maq1" fitHeight="78.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -121,7 +126,7 @@
             </ImageView>
          </children>
       </HBox>
-      <HBox fx:id="handmachine2" layoutX="410.0" layoutY="59.0" prefHeight="78.0" prefWidth="172.0">
+      <HBox fx:id="handmachine2" layoutX="250.0" layoutY="51.0" prefHeight="78.0" prefWidth="172.0">
          <children>
             <ImageView fx:id="card1maq2" fitHeight="78.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -145,14 +150,38 @@
             </ImageView>
          </children>
       </HBox>
-      <Pane fx:id="paneinitial" layoutX="24.0" layoutY="48.0" opacity="0.95" prefHeight="390.0" prefWidth="569.0" style="-fx-background-color: DarkRed; -fx-background-radius: 10;" visible="false">
+      <HBox fx:id="handmachine3" layoutX="483.0" layoutY="129.0" prefHeight="78.0" prefWidth="172.0">
          <children>
-            <ImageView fitHeight="337.0" fitWidth="326.0" layoutX="9.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="card1maq3" fitHeight="78.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/cartaabajo.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="card2maq3" fitHeight="78.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/cartaabajo.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="card3maq3" fitHeight="78.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/cartaabajo.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="card4maq3" fitHeight="78.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Images/cartaabajo.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <Pane fx:id="paneinitial" layoutX="16.0" layoutY="68.0" opacity="0.95" prefHeight="460.0" prefWidth="644.0" style="-fx-background-color: DarkRed; -fx-background-radius: 10; -fx-border-color: YELLOW; -fx-border-radius: 15;">
+         <children>
+            <ImageView fitHeight="339.0" fitWidth="356.0" layoutX="27.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/logocincuentazo.jpg" />
                </image>
             </ImageView>
-            <Button fx:id="Instrucciones" layoutX="357.0" layoutY="57.0" mnemonicParsing="false" onAction="#openhtlm" pickOnBounds="false" style="-fx-background-color: green; -fx-border-color: Gold; -fx-border-radius: 5;" text="INSTRUCCIONES" textFill="#f4f4f4" textOverrun="CENTER_ELLIPSIS">
+            <Button fx:id="Instrucciones" layoutX="425.0" layoutY="104.0" mnemonicParsing="false" onAction="#openhtlm" pickOnBounds="false" style="-fx-background-color: green; -fx-border-color: Gold; -fx-border-radius: 5;" text="INSTRUCCIONES" textFill="#f4f4f4" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -160,7 +189,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="machine1" layoutX="351.0" layoutY="167.0" mnemonicParsing="false" onAction="#ChooseMachine1" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Alex vs 1 maquina" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+            <Button fx:id="machine1" layoutX="436.0" layoutY="206.0" mnemonicParsing="false" onAction="#ChooseMachine1" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text=" vs 1 maquina" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -168,7 +197,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="machine2" layoutX="348.0" layoutY="219.0" mnemonicParsing="false" onAction="#ChooseMachine2" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Alex vs 2 maquinas" textFill="WHITE">
+            <Button fx:id="machine2" layoutX="433.0" layoutY="260.0" mnemonicParsing="false" onAction="#ChooseMachine2" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text=" vs 2 maquinas" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -176,7 +205,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="btnStart" layoutX="372.0" layoutY="288.0" mnemonicParsing="false" onAction="#enviar" pickOnBounds="false" style="-fx-background-color: green; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Iniciar juego" textFill="#fffdfd">
+            <Button fx:id="btnStart" layoutX="447.0" layoutY="376.0" mnemonicParsing="false" onAction="#enviar" pickOnBounds="false" style="-fx-background-color: green; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text="Iniciar juego" textFill="#fffdfd">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -184,9 +213,22 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label alignment="CENTER" layoutX="314.0" layoutY="111.0" prefHeight="25.0" prefWidth="224.0" text="Elije tus rivales" textAlignment="CENTER" textFill="#fafafa" underline="true">
+            <Label alignment="CENTER" layoutX="384.0" layoutY="160.0" prefHeight="25.0" prefWidth="224.0" text="Elije tus rivales" textAlignment="CENTER" textFill="#fafafa" underline="true">
                <font>
                   <Font name="Book Antiqua Bold" size="21.0" />
+               </font>
+            </Label>
+            <Button fx:id="machine3" layoutX="432.0" layoutY="317.0" mnemonicParsing="false" onAction="#ChooseMachine3" pickOnBounds="false" style="-fx-background-color: #B22222; -fx-border-color: LightSalmon; -fx-border-radius: 5;" text=" vs 3 maquinas" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label layoutX="172.0" layoutY="24.0" prefHeight="62.0" prefWidth="300.0" text="CINCUENTAZO" textFill="WHITE">
+               <font>
+                  <Font name="Bookman Old Style" size="38.0" />
                </font>
             </Label>
          </children>

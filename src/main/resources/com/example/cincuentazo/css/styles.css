@@ -1,0 +1,64 @@
+/* Fondo */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-image: url('../images/bg_main.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #8a5252;
+    text-shadow: 1px 1px 1px #e6d9d9;
+}
+
+/* Contenedor principal */
+.background {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor general */
+.container {
+    width: 100%;
+    max-width: 1000px; /* Ajusta el ancho máximo si lo deseas */
+    padding: 50px; /* Añade espacio alrededor */
+    margin: 0 auto; /* Centra horizontalmente el contenedor */
+
+}
+
+/* Estilo de las imágenes */
+img.img-fluid {
+    display: block; /* Asegura que la imagen se comporte como un bloque */
+    margin: 0 auto; /* Centra automáticamente horizontalmente */
+    max-width: 100%; /* Asegura que la imagen no exceda el contenedor */
+    height: auto; /* Mantiene las proporciones de la imagen */
+}
+
+/* Contenedor para alinear las imágenes */
+.d-flex {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    flex-wrap: wrap; /* Permite que las imágenes se ajusten en varias filas si es necesario */
+    gap: 20px; /* Espaciado entre imágenes */
+
+}
+
+/* Ajustes adicionales para textos */
+h1, h2, h3, h5, p {
+    text-align: center; /* Centra el texto dentro del contenedor */
+}
+/* En tu archivo styles.css */
+.step-img {
+    width: 350px; /* Ancho deseado */
+    height: 400px; /* Altura deseada */
+    object-fit: cover; /* Ajusta la imagen para que cubra el área sin distorsionarse */
+}
+.custom-color {
+    color: white; /* Cambia este valor al color que desees */
+}
