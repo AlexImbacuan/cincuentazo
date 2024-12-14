@@ -5,6 +5,11 @@ package com.example.cincuentazo.Model;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+/**
+ * Concrete decorator class that adds functionality to handle Ace card values.
+ * This class is used as a decorator in the Decorator pattern.
+ * The Decorator pattern allows for dynamically adding functionality to a card without altering its structure.
+ */
 public class AceValueCardDecorator extends CardDecorator {
     public AceValueCardDecorator(CardInterface decoratedCard) {
         super(decoratedCard);

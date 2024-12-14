@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Represents the main stage of the game, using the Singleton pattern.
+ */
 public class GameStage extends Stage {
     private GameController gameController;
 
@@ -28,6 +31,12 @@ public class GameStage extends Stage {
         return gameController;
     }
 
+    /**
+     * Returns the singleton instance of GameStage.
+     *
+     * @return the singleton instance of GameStage
+     * @throws IOException if the FXML file cannot be loaded
+     */
     public static GameStage getInstance() throws IOException {
         if(GameStageHolder.INSTANCE == null){
             GameStageHolder.INSTANCE = new GameStage();
@@ -35,6 +44,9 @@ public class GameStage extends Stage {
         return GameStageHolder.INSTANCE;
     }
 
+    /**
+     * Holder class for the singleton instance of GameStage.
+     */
     public static class GameStageHolder{
         private static  GameStage INSTANCE;
     }

@@ -3,6 +3,10 @@ package com.example.cincuentazo.Model;
 
 import javafx.scene.control.Label;
 
+/**
+ * Represents an observer in the Observer pattern for the game.
+ * Updates a label with the current count value when notified.
+ */
 public class GameObserver implements Observer {
     private final Label counterLabel;
 
