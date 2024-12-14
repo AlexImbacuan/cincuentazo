@@ -1,8 +1,6 @@
 package com.example.cincuentazo.Controller;
 
-import com.example.cincuentazo.Model.Card;
-import com.example.cincuentazo.Model.Deck;
-import com.example.cincuentazo.Model.MachineRunnable;
+import com.example.cincuentazo.Model.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -143,6 +141,7 @@ public class GameController {
     private MachineRunnable machineRunnable3;
     private boolean playerEliminated;
     private String playedCard;
+    private GameSubject gameSubject;
 
     public GameController() {
         System.out.println("Hello World!");
@@ -155,6 +154,7 @@ public class GameController {
         this.playerEliminated = false;
         this.playedCard = null;
 
+        this.gameSubject = new GameSubject();
 
     }
 
@@ -172,7 +172,8 @@ public class GameController {
 
                     // Update count and counter
                     count += card.getValor(imageName);
-                    counter.setText(String.valueOf(count));
+                    //counter.setText(String.valueOf(count));
+                    gameSubject.setCount(count);
 
                     if(playedCard != null) {
                         try {
@@ -182,7 +183,8 @@ public class GameController {
                         }
 
 
-                        counter.setText(String.valueOf(count));
+                        //counter.setText(String.valueOf(count));
+                        gameSubject.setCount(count);
                         System.out.println("Played card: " + playedCard + " Count: " + count);
                         Platform.runLater(() -> counter.setText(String.valueOf(count)));
                     }/*
@@ -221,6 +223,10 @@ public class GameController {
         machineThread1 = new Thread(machineRunnable1);
         machineThread2 = new Thread(machineRunnable2);
         machineThread3 = new Thread(machineRunnable3);
+
+        // Add observer
+        GameObserver gameObserver = new GameObserver(counter);
+        gameSubject.addObserver(gameObserver);
     }
 
     public void openhtlm(ActionEvent actionEvent) {
