@@ -185,7 +185,7 @@ public class GameController {
                         counter.setText(String.valueOf(count));
                         System.out.println("Played card: " + playedCard + " Count: " + count);
                         Platform.runLater(() -> counter.setText(String.valueOf(count)));
-                    }
+                    }/*
                     if(machineThread1.isAlive()){
 
                         card1maq1.setImage(machineRunnable1.showCards(0));
@@ -206,7 +206,7 @@ public class GameController {
                         card2maq3.setImage(machineRunnable3.showCards(1));
                         card3maq3.setImage(machineRunnable3.showCards(2));
                         card4maq3.setImage(machineRunnable3.showCards(3));
-                    }//visualizar cartas de la maquina 3
+                    }//visualizar cartas de la maquina 3*/
 
                 } else {
                     System.out.println("Image on mesa is null or has no URL" + imageName);
