@@ -6,6 +6,10 @@ import com.example.cincuentazo.Model.Observer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a subject in the Observer pattern for the game.
+ * Manages a list of observers and notifies them of changes.
+ */
 public class GameSubject implements Subject {
     private final List<Observer> observers = new ArrayList<>();
     private int count;

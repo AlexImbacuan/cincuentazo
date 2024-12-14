@@ -5,6 +5,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.net.URL;
 
+/**
+ * Represents a machine player in the game that runs on a separate thread.
+ */
 public class MachineRunnable implements Runnable {
     private String name;
     private int time;
@@ -18,6 +21,12 @@ public class MachineRunnable implements Runnable {
     private Deck deck;
     private ImageView mesaImageView;
 
+    /**
+     * Constructs a new MachineRunnable object with the specified name and deck.
+     *
+     * @param name the name of the machine
+     * @param deck the deck of cards used in the game
+     */
     public MachineRunnable(String name, Deck deck) {
         this.name = name;
         this.time = 1000;
@@ -30,6 +39,12 @@ public class MachineRunnable implements Runnable {
         this.deck = deck;
         this.mesaImageView = mesaImageView;
     }
+
+    /**
+     * Adds a card to the machine's hand.
+     *
+     * @param card the card to add
+     */
     public void takeCard(String card) {
         for (int i = 0; i < hand.length; i++) {
             if (hand[i] == null) {
@@ -39,6 +54,13 @@ public class MachineRunnable implements Runnable {
             }
         }
     }
+
+    /**
+     * Shows the card at the specified position in the machine's hand.
+     *
+     * @param position the position of the card in the hand
+     * @return the image of the card
+     */
     public Image showCards(int position) {
         if (hand[position] != null) {
             String imageUrl = getClass().getResource("/com/example/cincuentazo/Images/cards/" + hand[position] + ".jpg").toExternalForm();
@@ -49,12 +71,20 @@ public class MachineRunnable implements Runnable {
         return null;
     }
 
-
+    /**
+     * Passes the turn to the next player.
+     */
     public void passTurn() {
         turn = false;
     }
 
-
+    /**
+     * Sets the turn for the machine and processes the turn.
+     *
+     * @param valuemesa the current value on the table
+     * @return the image of the card played
+     * @throws InterruptedException if the thread is interrupted
+     */
     public Image setTurn(int valuemesa) throws InterruptedException {
 
         synchronized (lock) {
@@ -89,6 +119,10 @@ public class MachineRunnable implements Runnable {
         }
 
     }
+
+    /**
+     * Notifies the machine that it is its turn.
+     */
     public void notifyTurn() {
         synchronized (lock) {
             turn = true;
@@ -96,7 +130,11 @@ public class MachineRunnable implements Runnable {
         }
     }
 
-
+    /**
+     * Gets the highest possible card that the machine can play.
+     *
+     * @return the highest possible card
+     */
     public String getHighestPossibleCard() {
         int highestValue = Integer.MIN_VALUE;
         String highestCard = null;
@@ -111,6 +149,13 @@ public class MachineRunnable implements Runnable {
         }
         return highestCard;
     }
+
+    /**
+     * Throws a card from the machine's hand.
+     *
+     * @param card the card to throw
+     * @return the image of the card thrown
+     */
     public Image throwCard(String card) {
         for (int i = 0; i < hand.length; i++) {
             if (hand[i] != null && hand[i].equals(card)) {
@@ -131,6 +176,12 @@ public class MachineRunnable implements Runnable {
 
     }
 
+    /**
+     * Gets the value of the card based on its name.
+     *
+     * @param name the name of the card
+     * @return the value of the card
+     */
     public int getValor(String name) {
         char firstChar = name.charAt(0);
         int valor;
@@ -165,7 +216,9 @@ public class MachineRunnable implements Runnable {
         return valor;
     }
 
-
+    /**
+     * The main run method for the machine's thread.
+     */
     @Override
     public void run() {
         while (!winner && !loser) {
@@ -179,12 +232,34 @@ public class MachineRunnable implements Runnable {
         }
     }
 
+    /**
+     * Checks if the machine's hand is not empty.
+     *
+     * @return true if the hand is not empty, false otherwise
+     */
     public boolean getHand()
     {
         return hand != null;
     }
 
+    /**
+     * Checks if the machine is a loser.
+     *
+     * @return true if the machine is a loser, false otherwise
+     */
     public boolean isLoser() {
         return loser;
+    }
+
+    /**
+     * Moves the cards from the machine's hand to the played cards if the machine is eliminated.
+     */
+    public void moveCardsEliminated () {
+        for (int i = 0; i < hand.length; i++) {
+            if (hand[i] != null) {
+                deck.addPlayedCard(hand[i]);
+                hand[i] = null;
+            }
+        }
     }
 }

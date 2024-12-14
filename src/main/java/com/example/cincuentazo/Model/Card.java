@@ -3,12 +3,30 @@ package com.example.cincuentazo.Model;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-public class Card {//numero y palo
+
+/**
+ * Represents a card in the game with a value.
+ */
+public class Card implements CardInterface{//numero y palo
     private int valor;
 
+    /**
+     * Sets the value of the card.
+     *
+     * @param valor the value to set
+     */
     public void setValor(int valor) {
         this.valor = valor;
     }
+
+
+    /**
+     * Gets the value of the card based on its name.
+     *
+     * @param name the name of the card
+     * @return the value of the card
+     */
+    @Override
     public int getValor(String name) {
         char firstChar = name.charAt(0);
         int valor;
@@ -42,6 +60,12 @@ public class Card {//numero y palo
 
         return valor;
     }
+
+    /**
+     * Asks the user to choose a value for the Ace card.
+     *
+     * @return the chosen value for the Ace card
+     */
     private int askForAceValue() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Choose Ace Value");

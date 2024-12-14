@@ -27,6 +27,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import static java.lang.Thread.sleep;
 
+
+/**
+ * Controller class for managing the game logic and interactions.
+ */
 public class GameController {
     private final Lock turnLock = new ReentrantLock();
     private final Condition machine1Turn = turnLock.newCondition();
@@ -143,6 +147,9 @@ public class GameController {
     private String playedCard;
     private GameSubject gameSubject;
 
+    /**
+     * Constructor for the GameController class.
+     */
     public GameController() {
         System.out.println("Hello World!");
         this.space1 = false;
@@ -158,6 +165,9 @@ public class GameController {
 
     }
 
+    /**
+     * Initializes the controller class.
+     */
     @FXML
     public void initialize() {
         assert mesa != null : "fx:id=\"mesa\" was not injected: check your FXML file 'hello-view.fxml'.";
@@ -229,6 +239,11 @@ public class GameController {
         gameSubject.addObserver(gameObserver);
     }
 
+    /**
+     * Opens the instructions in a new browser window.
+     *
+     * @param actionEvent the event triggered by the user
+     */
     public void openhtlm(ActionEvent actionEvent) {
         try {
             File file = new File(getClass().getResource("/com/example/cincuentazo/Instructions.html").toURI());
@@ -237,6 +252,12 @@ public class GameController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Starts the game.
+     *
+     *
+     */
     @FXML
     void ChooseMachine1(ActionEvent event) {
         machine2.setVisible(false);
@@ -248,6 +269,11 @@ public class GameController {
         machine3.setVisible(false);
     }
 
+    /**
+     * Starts the game.
+     *
+     *
+     */
     @FXML
     void ChooseMachine2(ActionEvent event) {
         machine1.setVisible(false);
@@ -258,6 +284,11 @@ public class GameController {
         handmachine3.setVisible(false);
     }
 
+    /**
+     * Starts the game.
+     *
+     *
+     */
     @FXML
     void ChooseMachine3(ActionEvent event) {
         machineThread1.start();
@@ -267,6 +298,10 @@ public class GameController {
         machine2.setVisible(false);
     }
 
+    /**
+     * sent the cart to the players
+     * @param event
+     */
     @FXML
     void enviar(ActionEvent event) {
         paneinitial.setVisible(false);
@@ -289,9 +324,7 @@ public class GameController {
             }
         }
 
-
-
-        // Poner una carta aleatoria del mazo en la mesa para iniciar
+        // set a random card in the deck ask first card to play
         String initialCard = deck.getCard();
         String imageUrl = getClass().getResource("/com/example/cincuentazo/Images/cards/" + initialCard + ".jpg").toExternalForm();
         Image initialImage = new Image(imageUrl);
@@ -300,9 +333,6 @@ public class GameController {
         counter.setText(String.valueOf(count));
 
         // Agregar la carta inicial a las cartas jugadas
-
-
-
         System.out.println("maquina 1 puede jugar: "+machineRunnable1.getHand());
         System.out.println("maquina 2 puede jugar: "+machineRunnable1.getHand());
 
@@ -311,8 +341,17 @@ public class GameController {
         System.out.println("maquina 3 esta viva: "+ machineThread3.isAlive());
 
     }
+
+    /**
+     * create the image in the interface
+     * @param event
+     */
     @FXML
     void enviarfoto(MouseEvent event) {
+            if (playerEliminated){
+                new AlertBox().showAlert("Eliminated", "You have been eliminated", "You cannot play anymore.");
+                return;
+            }
 
             if (!space1) {
                 namecard = deck.getCard();
@@ -342,11 +381,21 @@ public class GameController {
 
     }
 
+    /**
+     * valid if you can play the card, if the card is not over 50
+     * @param cardName
+     * @return
+     */
     private boolean canPlayCard(String cardName) {
         int cardValue = card.getValor(cardName);
         return (cardValue + count) <= 50;
     }
 
+    /**
+     * get the name of the card
+     * @param imageView
+     * @return
+     */
     private String getCardNameFromImageView(ImageView imageView) {
         if (imageView.getImage() != null && imageView.getImage().getUrl() != null) {
             String imageUrl = imageView.getImage().getUrl();
@@ -355,6 +404,9 @@ public class GameController {
         return null;
     }
 
+    /**
+     * schedule the machine after the player is eliminated
+     */
     private void scheduleMachineAfterPlayer() {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -431,6 +483,9 @@ public class GameController {
         }, 0, 1, TimeUnit.SECONDS);
     }
 
+    /**
+     * schedule the machine turns
+     */
     private void scheduleMachineTurns(){
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -500,16 +555,27 @@ public class GameController {
         scheduler.shutdown();
     }
 
+    /**
+     * Handles the event when a player places a card.
+     *
+     * @param event the mouse event triggered by the player
+     * @throws InterruptedException if the thread is interrupted
+     */
     public void colocarcarta(MouseEvent event) throws InterruptedException {
         if (playerEliminated) {
-            new AlertBox().showAlert("Eliminated", "You have been eliminated", "You cannot play anymore.");
             scheduleMachineAfterPlayer();
+            new AlertBox().showAlert("Eliminated", "You have been eliminated", "You cannot play anymore.");
             checkForWinner();
         } else {
             ImageView clickedImageView = (ImageView) event.getSource();
             String cardName = getCardNameFromImageView(clickedImageView);
             System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
 
+            CardInterface card = new Card();
+            if (cardName.charAt(0) == 'a') {
+                card = new AceValueCardDecorator(card);
+            }
+            int valor = card.getValor(cardName);
 
             if (clickedImageView == carta1 && space1 && canPlayCard(cardName)) {
                 //Platform.runLater(() -> {
@@ -548,11 +614,28 @@ public class GameController {
         checkForWinner();
     }
 
+
+    /**
+     * Retrieves the card name from the given ImageView.
+     *
+     * @param imageView the ImageView containing the card image
+     * @return the name of the card
+     */
     private String getCardName (ImageView imageView) {
         return "cardName";
     }
 
+
+    /**
+     * Checks if the player should be eliminated based on the current state.
+     *
+     * @return true if the player should be eliminated, false otherwise
+     */
     private boolean shouldPlayerBeEliminated() {
+        if (!space1 || !space2 || !space3 || !space4){
+            return false;
+        }
+
         int totalValue = 0;
         if (space1 && carta1.getImage() != null) totalValue += card.getValor(getCardNameFromImageView(carta1));
         if (space2 && carta2.getImage() != null) totalValue += card.getValor(getCardNameFromImageView(carta2));
@@ -561,14 +644,24 @@ public class GameController {
         return (totalValue + count) > 50;
     }
 
+
+    /**
+     * Checks for the elimination of players and machines.
+     */
     private void checkForElimination() {
         if (machineRunnable1.isLoser()) {
+            handmachine1.setVisible(false);
+            machineRunnable1.moveCardsEliminated();
             System.out.println("Machine 1 is eliminated");
         }
         if (machineRunnable2.isLoser()) {
+            handmachine2.setVisible(false);
+            machineRunnable2.moveCardsEliminated();
             System.out.println("Machine 2 is eliminated");
         }
         if (machineRunnable3.isLoser()) {
+            handmachine3.setVisible(false);
+            machineRunnable3.moveCardsEliminated();
             System.out.println("Machine 3 is eliminated");
         }
         if (shouldPlayerBeEliminated()) {
@@ -579,6 +672,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Checks for the winner of the game.
+     *
+     * @return true if there is a winner, false otherwise
+     */
     private boolean checkForWinner() {
         int activeMachines = 0;
         if (machineThread1.isAlive() && !machineRunnable1.isLoser()) activeMachines++;
@@ -610,6 +708,9 @@ public class GameController {
         return false;
     }
 
+    /**
+     * Moves the player's cards to the played cards if the player is eliminated.
+     */
     private void moveCardsToPlayedIfEliminated() {
         if (playerEliminated) {
             if (carta1.getImage() != null) {
@@ -631,6 +732,8 @@ public class GameController {
             System.out.println("Player's cards have been moved to played cards.");
         }
     }
+
+
 
 }
 
