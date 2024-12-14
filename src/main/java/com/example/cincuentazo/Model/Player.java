@@ -1,5 +1,6 @@
 package com.example.cincuentazo.Model;
 
+
 public class Player {//4 cartas, un turno, estado(ganador o perdedor), tomar una carta, lanzar una carta, robar una carta, pasar el turno
 
     private int topcard;
