@@ -568,6 +568,7 @@ public class GameController {
         if (shouldPlayerBeEliminated()) {
             playerEliminated = true;
             System.out.println("Player is eliminated");
+            moveCardsToPlayedIfEliminated();
             // Additional logic to handle player elimination
         }
     }
@@ -601,6 +602,28 @@ public class GameController {
         }
 
         return false;
+    }
+
+    private void moveCardsToPlayedIfEliminated() {
+        if (playerEliminated) {
+            if (carta1.getImage() != null) {
+                deck.addPlayedCard(getCardNameFromImageView(carta1));
+                carta1.setImage(null);
+            }
+            if (carta2.getImage() != null) {
+                deck.addPlayedCard(getCardNameFromImageView(carta2));
+                carta2.setImage(null);
+            }
+            if (carta3.getImage() != null) {
+                deck.addPlayedCard(getCardNameFromImageView(carta3));
+                carta3.setImage(null);
+            }
+            if (carta4.getImage() != null) {
+                deck.addPlayedCard(getCardNameFromImageView(carta4));
+                carta4.setImage(null);
+            }
+            System.out.println("Player's cards have been moved to played cards.");
+        }
     }
 
 }
