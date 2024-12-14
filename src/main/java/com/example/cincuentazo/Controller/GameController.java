@@ -349,49 +349,83 @@ public class GameController {
         return null;
     }
 
-    public void colocarcarta(MouseEvent event) throws InterruptedException {
-        if (playerEliminated) {
-            new AlertBox().showAlert("Eliminated", "You have been eliminated", "You cannot play anymore.");
-        } else {
-            ImageView clickedImageView = (ImageView) event.getSource();
-            String cardName = getCardNameFromImageView(clickedImageView);
-            System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
+    private void scheduleMachineAfterPlayer() {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-
-            if (clickedImageView == carta1 && space1 && canPlayCard(cardName)) {
-                //Platform.runLater(() -> {
-                    mesa.setImage(carta1.getImage());
-                    carta1.setImage(null);
-                //});
-                space1 = false;
-                playedCard = cardName;
-
-            } else if (clickedImageView == carta2 && space2 && canPlayCard(cardName)) {
-                mesa.setImage(carta2.getImage());
-                carta2.setImage(null);
-                space2 = false;
-                playedCard = cardName;
-            } else if (clickedImageView == carta3 && space3 && canPlayCard(cardName)) {
-                mesa.setImage(carta3.getImage());
-                carta3.setImage(null);
-                space3 = false;
-                playedCard = cardName;
-            } else if (clickedImageView == carta4 && space4 && canPlayCard(cardName)) {
-                mesa.setImage(carta4.getImage());
-                carta4.setImage(null);
-                space4 = false;
-                playedCard = cardName;
-            } else {
-                new AlertBox().showAlert("Error", "Invalid card", "You can't play this card");
+        scheduler.scheduleAtFixedRate(() -> {
+            turnLock.lock();
+            try {
+                while (currentTurn != 1) {
+                    machine1Turn.await();
+                }
+                if (machineThread1.isAlive() && !machineRunnable1.isLoser()) {
+                    System.out.println("Machine 1 is playing");
+                    machineRunnable1.notifyTurn();
+                    cardsmachine = machineRunnable1.setTurn(Integer.parseInt(counter.getText()));
+                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                }
+                currentTurn = 2;
+                machine2Turn.signal();
+                checkForWinner();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                turnLock.unlock();
             }
-            System.out.println("Played card: " + playedCard);
-            deck.addPlayedCard(playedCard);
+        }, 0, 6, TimeUnit.SECONDS);
 
+        scheduler.scheduleAtFixedRate(() -> {
+            turnLock.lock();
+            try {
+                while (currentTurn != 2) {
+                    machine2Turn.await();
+                }
+                if (machineThread2.isAlive() && !machineRunnable2.isLoser()) {
+                    System.out.println("Machine 2 is playing");
+                    machineRunnable2.notifyTurn();
+                    cardsmachine = machineRunnable2.setTurn(Integer.parseInt(counter.getText()));
+                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                }
+                currentTurn = 3;
+                machine3Turn.signal();
+                checkForWinner();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                turnLock.unlock();
+            }
+        }, 2, 6, TimeUnit.SECONDS);
 
-        }
+        scheduler.scheduleAtFixedRate(() -> {
+            turnLock.lock();
+            try {
+                while (currentTurn != 3) {
+                    machine3Turn.await();
+                }
+                if (machineThread3.isAlive() && !machineRunnable3.isLoser()) {
+                    System.out.println("Machine 3 is playing");
+                    machineRunnable3.notifyTurn();
+                    cardsmachine = machineRunnable3.setTurn(Integer.parseInt(counter.getText()));
+                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                }
+                currentTurn = 1;
+                machine1Turn.signal();
+                checkForWinner();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            } finally {
+                turnLock.unlock();
+            }
+        }, 4, 6, TimeUnit.SECONDS);
 
-        checkForElimination();
+        scheduler.scheduleAtFixedRate(() -> {
+            if (checkForWinner()) {
+                scheduler.shutdown();
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+    }
 
+    private void scheduleMachineTurns(){
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         scheduler.schedule(() -> {
@@ -458,7 +492,53 @@ public class GameController {
         }, 4, TimeUnit.SECONDS);
 
         scheduler.shutdown();
+    }
 
+    public void colocarcarta(MouseEvent event) throws InterruptedException {
+        if (playerEliminated) {
+            new AlertBox().showAlert("Eliminated", "You have been eliminated", "You cannot play anymore.");
+            scheduleMachineAfterPlayer();
+            checkForWinner();
+        } else {
+            ImageView clickedImageView = (ImageView) event.getSource();
+            String cardName = getCardNameFromImageView(clickedImageView);
+            System.out.println("Clicked ImageView ID: " + clickedImageView.getId());
+
+
+            if (clickedImageView == carta1 && space1 && canPlayCard(cardName)) {
+                //Platform.runLater(() -> {
+                    mesa.setImage(carta1.getImage());
+                    carta1.setImage(null);
+                //});
+                space1 = false;
+                playedCard = cardName;
+
+            } else if (clickedImageView == carta2 && space2 && canPlayCard(cardName)) {
+                mesa.setImage(carta2.getImage());
+                carta2.setImage(null);
+                space2 = false;
+                playedCard = cardName;
+            } else if (clickedImageView == carta3 && space3 && canPlayCard(cardName)) {
+                mesa.setImage(carta3.getImage());
+                carta3.setImage(null);
+                space3 = false;
+                playedCard = cardName;
+            } else if (clickedImageView == carta4 && space4 && canPlayCard(cardName)) {
+                mesa.setImage(carta4.getImage());
+                carta4.setImage(null);
+                space4 = false;
+                playedCard = cardName;
+            } else {
+                new AlertBox().showAlert("Error", "Invalid card", "You can't play this card");
+            }
+            System.out.println("Played card: " + playedCard);
+            deck.addPlayedCard(playedCard);
+
+
+        }
+
+        checkForElimination();
+        scheduleMachineTurns();
         checkForWinner();
     }
 
@@ -492,7 +572,7 @@ public class GameController {
         }
     }
 
-    private void checkForWinner() {
+    private boolean checkForWinner() {
         int activeMachines = 0;
         if (machineThread1.isAlive() && !machineRunnable1.isLoser()) activeMachines++;
         if (machineThread2.isAlive() && !machineRunnable2.isLoser()) activeMachines++;
@@ -501,26 +581,22 @@ public class GameController {
         if (!playerEliminated && activeMachines == 0) {
             new AlertBox().showAlert("Winner", "You are the winner!", "Congratulations!");
             Platform.exit();
-            return;
+            return true;
         }
 
-        if (playerEliminated && machineThread1.isAlive() && !machineRunnable1.isLoser() && !machineThread2.isAlive() && !machineThread3.isAlive()) {
-            new AlertBox().showAlert("Winner", "Machine 1 is the winner!", "Congratulations!");
+        if (playerEliminated && activeMachines == 1) {
+            if (machineThread1.isAlive() && !machineRunnable1.isLoser()) {
+                new AlertBox().showAlert("Winner", "Machine 1 is the winner!", "Congratulations!");
+            } else if (machineThread2.isAlive() && !machineRunnable2.isLoser()) {
+                new AlertBox().showAlert("Winner", "Machine 2 is the winner!", "Congratulations!");
+            } else if (machineThread3.isAlive() && !machineRunnable3.isLoser()) {
+                new AlertBox().showAlert("Winner", "Machine 3 is the winner!", "Congratulations!");
+            }
             Platform.exit();
-            return;
+            return true;
         }
 
-        if (playerEliminated && !machineThread1.isAlive() && machineThread2.isAlive() && !machineRunnable2.isLoser() && !machineThread3.isAlive()) {
-            new AlertBox().showAlert("Winner", "Machine 2 is the winner!", "Congratulations!");
-            Platform.exit();
-            return;
-        }
-
-        if (playerEliminated && !machineThread1.isAlive() && !machineThread2.isAlive() && machineThread3.isAlive() && !machineRunnable3.isLoser()) {
-            new AlertBox().showAlert("Winner", "Machine 3 is the winner!", "Congratulations!");
-            Platform.exit();
-            return;
-        }
+        return false;
     }
 
 }
