@@ -418,9 +418,14 @@ public class GameController {
                 }
                 if (machineThread1.isAlive() && !machineRunnable1.isLoser()) {
                     System.out.println("Machine 1 is playing");
+                    labelmachine1.setStyle("-fx-text-fill:red;");
+                    labelmachine2.setStyle("-fx-text-fill:white;");
+                    labelmachine3.setStyle("-fx-text-fill:white;");
                     machineRunnable1.notifyTurn();
                     cardsmachine = machineRunnable1.setTurn(Integer.parseInt(counter.getText()));
-                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                    if (cardsmachine != null) {
+                        Platform.runLater(() -> mesa.setImage(cardsmachine));
+                    }
                 }
                 checkForElimination();
                 currentTurn = 2;
@@ -441,9 +446,14 @@ public class GameController {
                 }
                 if (machineThread2.isAlive() && !machineRunnable2.isLoser()) {
                     System.out.println("Machine 2 is playing");
+                    labelmachine2.setStyle("-fx-text-fill:red;");
+                    labelmachine1.setStyle("-fx-text-fill:white;");
+                    labelmachine3.setStyle("-fx-text-fill:white;");
                     machineRunnable2.notifyTurn();
                     cardsmachine = machineRunnable2.setTurn(Integer.parseInt(counter.getText()));
-                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                    if (cardsmachine != null) {
+                        Platform.runLater(() -> mesa.setImage(cardsmachine));
+                    }
                 }
                 checkForElimination();
                 currentTurn = 3;
@@ -464,9 +474,14 @@ public class GameController {
                 }
                 if (machineThread3.isAlive() && !machineRunnable3.isLoser()) {
                     System.out.println("Machine 3 is playing");
+                    labelmachine3.setStyle("-fx-text-fill:red;");
+                    labelmachine1.setStyle("-fx-text-fill:white;");
+                    labelmachine2.setStyle("-fx-text-fill:white;");
                     machineRunnable3.notifyTurn();
                     cardsmachine = machineRunnable3.setTurn(Integer.parseInt(counter.getText()));
-                    Platform.runLater(() -> mesa.setImage(cardsmachine));
+                    if (cardsmachine != null) {
+                        Platform.runLater(() -> mesa.setImage(cardsmachine));
+                        }
                 }
                 checkForElimination();
                 currentTurn = 1;
@@ -680,18 +695,21 @@ public class GameController {
             labelmachine1.setText("Eliminated");
             machineRunnable1.moveCardsEliminated();
             System.out.println("Machine 1 is eliminated");
+            checkForWinner();
         }
         if (machineRunnable2.isLoser()) {
             handmachine2.setVisible(false);
             labelmachine2.setText("Eliminated");
             machineRunnable2.moveCardsEliminated();
             System.out.println("Machine 2 is eliminated");
+            checkForWinner();
         }
         if (machineRunnable3.isLoser()) {
             handmachine3.setVisible(false);
             labelmachine3.setText("Eliminated");
             machineRunnable3.moveCardsEliminated();
             System.out.println("Machine 3 is eliminated");
+            checkForWinner();
         }
         if (shouldPlayerBeEliminated()) {
             playerEliminated = true;

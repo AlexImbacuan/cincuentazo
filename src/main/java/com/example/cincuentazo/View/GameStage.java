@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import javafx.scene.image.Image;
 import java.io.IOException;
 
 /**
@@ -21,6 +21,7 @@ public class GameStage extends Stage {
         gameController = loader.getController();
         Scene scene = new Scene(root);
         setTitle("Cincuentazo");
+        this.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/cincuentazo/images/icono.png")));
         setResizable(false);
         setScene(scene);
         show();
